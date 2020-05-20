@@ -25,10 +25,10 @@ namespace Repository.Models
         [DataType(DataType.DateTime)]
         public DateTime AddTime { get; set; }
 
-        public int UserId { get; set; }
+        public string InternalUserId { get; set; }
 
 
-        public User User { get; private set; }
+        public InternalUser InternalUser { get; private set; }
 
         public Category Categories { get; private set; }
 

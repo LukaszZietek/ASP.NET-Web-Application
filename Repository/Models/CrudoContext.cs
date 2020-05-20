@@ -24,7 +24,7 @@ namespace Repository.Models
 
         public DbSet<Advertisement> Advertisements { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<User> WebsiteUsers { get; set; }
+        public DbSet<InternalUser> WebsiteUsers { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -34,8 +34,8 @@ namespace Repository.Models
 
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
-            modelBuilder.Entity<Advertisement>().HasRequired(x=>x.User).WithMany(x=>x.Advertisements)
-                .HasForeignKey(x=>x.UserId).WillCascadeOnDelete(true);
+            modelBuilder.Entity<Advertisement>().HasRequired(x=>x.InternalUser).WithMany(x=>x.Advertisements)
+                .HasForeignKey(x=>x.InternalUserId).WillCascadeOnDelete(true);
 
         }
 

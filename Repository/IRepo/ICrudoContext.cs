@@ -15,7 +15,7 @@ namespace Repository.IRepo
 
        DbSet<Advertisement> Advertisements { get; set; }
        DbSet<Category> Categories { get; set; }
-       DbSet<User> WebsiteUsers { get; set; }
+       DbSet<InternalUser> WebsiteUsers { get; set; }
 
         int SaveChanges();
         Database Database { get; }
