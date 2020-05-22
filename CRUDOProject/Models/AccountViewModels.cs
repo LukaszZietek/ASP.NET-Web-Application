@@ -79,6 +79,16 @@ namespace CRUDOProject.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(100,ErrorMessage = "The name must be at least 100 characters long.")]
+        [Display(Name = "Imie")]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The name must be at least 100 characters long.")]
+        [Display(Name = "Nazwisko")]
+        public string SurName { get; set; }
     }
 
     public class ResetPasswordViewModel

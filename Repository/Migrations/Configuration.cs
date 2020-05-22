@@ -1,3 +1,5 @@
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Repository.Models;
@@ -41,7 +43,7 @@ namespace Repository.Migrations
 
 
             SeedRoles(context);
-           // SeedUsers(context);
+            SeedUsers(context);
 
         }
 
@@ -69,16 +71,31 @@ namespace Repository.Migrations
 
         private void SeedUsers(CrudoContext context)
         {
-            if (!context.Users.Any(u => u.UserName == "Administrator@mvc.pl"))
+            if (!context.Users.Any(u => u.UserName == "administrator@mvc.pl"))
             {
                 var store = new UserStore<InternalUser>(context);
                 var manager = new UserManager<InternalUser>(store);
-                var user = new InternalUser {UserName = "Administrator@mvc.pl", Name = "Lukasz", SurName = "Zietek",
-                    EmailAddress = "Administrator@mvc.pl", RegisterDate = DateTime.Now, IfConfirm = true};
-
-                var adminresult = manager.Create(user,"Maciek12_!");
-                if(adminresult.Succeeded)
-                manager.AddToRole(user.Id, "Admin");
+                var user = new InternalUser {UserName = "administrator@mvc.pl", Name = "Maciek", SurName = "Zietek",
+                    EmailAddress = "administrator@mvc.pl", RegisterDate = DateTime.Now, IfConfirm = true, Email = "administrator@mvc.pl"};
+                try
+                {
+                    var adminresult = manager.Create(user, "Maciek12_!");
+                    if (adminresult.Succeeded)
+                        manager.AddToRole(user.Id, "Admin");
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var validationErrors in e.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}",
+                                validationError.PropertyName,
+                                validationError.ErrorMessage);
+                        }
+                    }
+                }
+                
             }
 
         }

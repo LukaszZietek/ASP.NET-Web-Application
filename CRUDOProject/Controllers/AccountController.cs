@@ -152,7 +152,11 @@ namespace CRUDOProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new InternalUser { UserName = model.Email, Email = model.Email, IfConfirm = false};
+                var user = new InternalUser
+                {
+                    UserName = model.Email, Email = model.Email, IfConfirm = false, Name = model.Name, SurName = model.SurName,
+                    RegisterDate = DateTime.Now, EmailAddress = model.Email
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

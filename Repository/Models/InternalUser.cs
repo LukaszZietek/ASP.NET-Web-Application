@@ -18,7 +18,6 @@ namespace Repository.Models
         }
 
         [Required]
-        [RegularExpression(@"^[A-Z]", ErrorMessage = "Podaj pierwszą literę imienia dużą literą")]
         public string Name { get; set; }
         [Required]
         public string SurName { get; set; }
