@@ -2,6 +2,7 @@ using System;
 using CRUDOProject.Controllers;
 using Repository.IRepo;
 using Repository.Models;
+using Repository.Repo;
 using Unity;
 using Unity.AspNet.Mvc;
 using Unity.Injection;
@@ -49,6 +50,7 @@ namespace CRUDOProject
             container.RegisterType<AccountController>(new InjectionConstructor());
             container.RegisterType<ManageController>(new InjectionConstructor());
             container.RegisterType<ICrudoContext, CrudoContext>(new PerRequestLifetimeManager());
+            container.RegisterType<IAdvertisementRepo, AdvertisementRepo>(new PerRequestLifetimeManager());
         }
     }
 }

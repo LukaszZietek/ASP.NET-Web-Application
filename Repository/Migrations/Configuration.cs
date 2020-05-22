@@ -9,7 +9,7 @@ namespace Repository.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Repository.Models.CrudoContext>
+    public sealed class Configuration : DbMigrationsConfiguration<Repository.Models.CrudoContext>
     {
         public Configuration()
         {
@@ -17,7 +17,12 @@ namespace Repository.Migrations
             AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(Repository.Models.CrudoContext context)
+        public void RunSeed(CrudoContext db)
+        {
+            Seed(db);
+        }
+
+        protected override void Seed(CrudoContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -36,7 +41,7 @@ namespace Repository.Migrations
 
 
             SeedRoles(context);
-            SeedUsers(context);
+           // SeedUsers(context);
 
         }
 
@@ -64,13 +69,15 @@ namespace Repository.Migrations
 
         private void SeedUsers(CrudoContext context)
         {
-            if (!context.Users.Any(u => u.UserName == "Administrator"))
+            if (!context.Users.Any(u => u.UserName == "Administrator@mvc.pl"))
             {
                 var store = new UserStore<InternalUser>(context);
                 var manager = new UserManager<InternalUser>(store);
-                var user = new InternalUser {UserName = "Administrator"};
+                var user = new InternalUser {UserName = "Administrator@mvc.pl", Name = "Lukasz", SurName = "Zietek",
+                    EmailAddress = "Administrator@mvc.pl", RegisterDate = DateTime.Now, IfConfirm = true};
 
-                manager.Create(user,"123456");
+                var adminresult = manager.Create(user,"Maciek12_!");
+                if(adminresult.Succeeded)
                 manager.AddToRole(user.Id, "Admin");
             }
 

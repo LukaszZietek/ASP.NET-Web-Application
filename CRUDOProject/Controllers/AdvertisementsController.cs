@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Repository.IRepo;
 using Repository.Models;
 
@@ -26,7 +27,8 @@ namespace CRUDOProject.Controllers
             var advertisements = _repo.GetAdvertisements();
             return View(advertisements.ToList());
         }
-        /*
+        
+        [Authorize]
         // GET: Advertisements/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +36,8 @@ namespace CRUDOProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = db.Advertisements.Find(id);
+
+            Advertisement advertisement = _repo.GetAdvertisement(id);
             if (advertisement == null)
             {
                 return HttpNotFound();
@@ -42,10 +45,10 @@ namespace CRUDOProject.Controllers
             return View(advertisement);
         }
 
+        [Authorize]
         // GET: Advertisements/Create
         public ActionResult Create()
         {
-            ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email");
             return View();
         }
 
@@ -53,17 +56,20 @@ namespace CRUDOProject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,AddTime,InternalUserId")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Categories")] Advertisement advertisement)
         {
             if (ModelState.IsValid)
             {
-                db.Advertisements.Add(advertisement);
-                db.SaveChanges();
+                advertisement.AddTime = DateTime.Now;
+                advertisement.InternalUserId = User.Identity.GetUserId();
+                _repo.AddAdvertisement(advertisement);
+                _repo.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email", advertisement.InternalUserId);
+            //ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email", advertisement.InternalUserId);
             return View(advertisement);
         }
 
@@ -74,12 +80,13 @@ namespace CRUDOProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = db.Advertisements.Find(id);
+
+            Advertisement advertisement = _repo.GetAdvertisement(id);
             if (advertisement == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email", advertisement.InternalUserId);
+            //ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email", advertisement.InternalUserId);
             return View(advertisement);
         }
 
@@ -92,11 +99,11 @@ namespace CRUDOProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(advertisement).State = EntityState.Modified;
-                db.SaveChanges();
+                _repo.UpdateAdvertisement(advertisement);
+                _repo.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email", advertisement.InternalUserId);
+            //ViewBag.InternalUserId = new SelectList(db.Users, "Id", "Email", advertisement.InternalUserId);
             return View(advertisement);
         }
 
@@ -107,7 +114,8 @@ namespace CRUDOProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = db.Advertisements.Find(id);
+
+            Advertisement advertisement = _repo.GetAdvertisement(id);
             if (advertisement == null)
             {
                 return HttpNotFound();
@@ -120,13 +128,12 @@ namespace CRUDOProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Advertisement advertisement = db.Advertisements.Find(id);
-            db.Advertisements.Remove(advertisement);
-            db.SaveChanges();
+            _repo.DeleteAdvertisement(id);
+            _repo.SaveChanges();
             return RedirectToAction("Index");
         }
         
-
+        /*
         protected override void Dispose(bool disposing)
         {
             if (disposing)
