@@ -125,6 +125,17 @@ namespace CRUDOProject.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ShowAdvertisements(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var advertisements = _repo.GetAdvertisementsByCategories((int)id);
+            return RedirectToAction("Index", "Advertisements", advertisements);
+        }
+
         
     }
 }

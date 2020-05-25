@@ -51,6 +51,7 @@ namespace CRUDOProject
             container.RegisterType<ManageController>(new InjectionConstructor());
             container.RegisterType<ICrudoContext, CrudoContext>(new PerRequestLifetimeManager());
             container.RegisterType<IAdvertisementRepo, AdvertisementRepo>(new PerRequestLifetimeManager());
+            container.RegisterType<ICategoryRepo, CategoryRepo>(new PerRequestLifetimeManager());
         }
     }
 }
