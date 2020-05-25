@@ -49,6 +49,7 @@ namespace CRUDOProject.Controllers
         // GET: Advertisements/Create
         public ActionResult Create()
         {
+            ViewBag.States = new SelectList(_repo.GetCategoriesName());
             return View();
         }
 
@@ -58,13 +59,14 @@ namespace CRUDOProject.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Categories")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Categories,Image")] Advertisement advertisement)
         {
             if (ModelState.IsValid)
             {
+                HttpPostedFileBase file = Request.Files["ImageData"];
                 advertisement.AddTime = DateTime.Now;
                 advertisement.InternalUserId = User.Identity.GetUserId();
-                _repo.AddAdvertisement(advertisement);
+                _repo.AddAdvertisement(advertisement,file);
                 _repo.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -132,6 +134,7 @@ namespace CRUDOProject.Controllers
             _repo.SaveChanges();
             return RedirectToAction("Index");
         }
+
         
         /*
         protected override void Dispose(bool disposing)

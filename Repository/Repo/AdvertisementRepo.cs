@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.ModelBinding;
@@ -53,14 +54,24 @@ namespace Repository.Repo
             throw new HttpException("We can't find advertisement which has that ID");
         }
 
-        public void AddAdvertisement(Advertisement ad)
+        public void AddAdvertisement(Advertisement ad, HttpPostedFileBase file)
         {
+            using (var binaryReader = new BinaryReader(file.InputStream))
+            {
+                ad.Image = binaryReader.ReadBytes(file.ContentLength);
+            }
+
             _db.Advertisements.Add(ad);
         }
 
         public void UpdateAdvertisement(Advertisement ad)
         {
             _db.Entry(ad).State = EntityState.Modified;
+        }
+
+        public List<string> GetCategoriesName()
+        {
+            return _db.Categories.Select(x => x.Title).AsNoTracking().ToList();
         }
 
         public void SaveChanges()

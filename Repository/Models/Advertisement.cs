@@ -25,6 +25,10 @@ namespace Repository.Models
         [DataType(DataType.DateTime)]
         public DateTime AddTime { get; set; }
 
+        [Required]
+        [Description("Zdjęcie")]
+        public byte[] Image { get; set; }
+
         public string InternalUserId { get; set; }
 
 

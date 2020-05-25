@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Repository.Models;
 
 namespace Repository.IRepo
@@ -15,9 +16,11 @@ namespace Repository.IRepo
 
         void DeleteAdvertisement(int? id);
 
-        void AddAdvertisement(Advertisement ad);
+        void AddAdvertisement(Advertisement ad, HttpPostedFileBase file);
 
         void UpdateAdvertisement(Advertisement ad);
+
+        List<string> GetCategoriesName();
 
         void SaveChanges();
 
