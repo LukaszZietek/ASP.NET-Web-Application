@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.ModelBinding;
+using System.Web.Mvc;
 using Repository.IRepo;
 using Repository.Models;
 
@@ -69,10 +70,25 @@ namespace Repository.Repo
             _db.Entry(ad).State = EntityState.Modified;
         }
 
-        public List<string> GetCategoriesName()
+      
+
+        public IQueryable<Advertisement> GetAdvertisementsByCategory (int id)
         {
-            return _db.Categories.Select(x => x.Title).AsNoTracking().ToList();
+           return _db.Advertisements.Where(x => x.CategoriesId == id).AsNoTracking();
+
         }
+        public static IEnumerable<SelectListItem> GetCategoriesList()
+        {
+            IList<SelectListItem> categories = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Ubrania", Value = "1"},
+                new SelectListItem() {Text = "Samochody", Value = "2"},
+                new SelectListItem() {Text = "Sport", Value = "3"},
+                new SelectListItem() {Text = "Ksiązki", Value = "4"}
+            };
+            return categories;
+        }
+
 
         public void SaveChanges()
         {

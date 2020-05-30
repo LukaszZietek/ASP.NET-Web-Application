@@ -1,4 +1,5 @@
 ﻿@using Repository.Models
+@using Repository.Repo
 @model Repository.Models.Advertisement
 
 @{
@@ -33,10 +34,11 @@
         </div>
         
         <div class="form-group">
-            @Html.LabelFor(model=>model.Categories,htmlAttributes: new {@class = "control-label col-md-2"})
+            @Html.LabelFor(model=>model.CategoriesId,new {  @class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Categories, ViewBag.States as SelectList,new {@class = "btn btn-info dropdown-toggle" })
-                @Html.ValidationMessageFor(model => model.Categories, "", new {@class = "text-danger"})
+                @*@Html.DropDownListFor(model => model.Categories, ViewBag.States as SelectList,new {@class = "btn btn-info dropdown-toggle" })*@
+                @Html.DropDownListFor(x=>x.CategoriesId,AdvertisementRepo.GetCategoriesList(), new { @class = "btn btn-info dropdown-toggle" })
+                @*@Html.DropDownList("Kategorie",AdvertisementRepo.GetCategoriesList())*@
             </div>
         </div>
         
@@ -57,7 +59,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Powrót", "Index")
 </div>
 
 @section Scripts {

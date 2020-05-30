@@ -32,7 +32,8 @@
                 @Html.ActionLink("Szczegóły", "Details", new {id = item.Id}, new {@class = "btn btn-info"})
                 @Html.ActionLink("Usuń", "Delete", new {id = item.Id}, new {@class = "btn btn-danger"})
             }
-            @Html.ActionLink("Wybierz", "ShowAdvertisements", new {id = item.Id}, new { @class = "btn btn-primary"})
+            @*@Html.ActionLink("Wybierz", "ShowAdvertisements", new {id = item.Id}, new { @class = "btn btn-primary"})*@
+            @Html.ActionLink("Wybierz", "Index","Advertisements", new {id = item.Id}, new { @class = "btn btn-primary" })
         </td>
     </tr>
 }

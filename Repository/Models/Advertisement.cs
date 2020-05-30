@@ -31,10 +31,15 @@ namespace Repository.Models
 
         public string InternalUserId { get; set; }
 
+        [Required]
+        [Display(Name = "Kategorie")]
+        public int CategoriesId { get; set; }
 
-        public InternalUser InternalUser { get; private set; }
 
-        public Category Categories { get; private set; }
+        public virtual InternalUser InternalUser { get; private set; }
+
+        
+        public virtual Category Categories { get; set; }
 
     }
 }

@@ -22,10 +22,15 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Advertisements
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var advertisements = _repo.GetAdvertisements();
-            return View(advertisements.ToList());
+            if (id == null)
+            {
+                var advertisements = _repo.GetAdvertisements();
+                return View(advertisements.ToList());
+            }
+            var add =_repo.GetAdvertisementsByCategory((int)id);
+            return View(add.ToList());
         }
         
         [Authorize]
@@ -49,7 +54,6 @@ namespace CRUDOProject.Controllers
         // GET: Advertisements/Create
         public ActionResult Create()
         {
-            ViewBag.States = new SelectList(_repo.GetCategoriesName());
             return View();
         }
 
@@ -59,9 +63,9 @@ namespace CRUDOProject.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Categories,Image")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Image,CategoriesId")] Advertisement advertisement)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 HttpPostedFileBase file = Request.Files["ImageData"];
                 advertisement.AddTime = DateTime.Now;
@@ -76,6 +80,7 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Advertisements/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -97,6 +102,7 @@ namespace CRUDOProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "Id,Title,Content,AddTime,InternalUserId")] Advertisement advertisement)
         {
             if (ModelState.IsValid)
@@ -109,7 +115,9 @@ namespace CRUDOProject.Controllers
             return View(advertisement);
         }
 
+
         // GET: Advertisements/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -126,6 +134,7 @@ namespace CRUDOProject.Controllers
         }
 
         // POST: Advertisements/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -133,6 +142,17 @@ namespace CRUDOProject.Controllers
             _repo.DeleteAdvertisement(id);
             _repo.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+
+        public ActionResult ShowAdvertisementsFromCategory(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var advertisement = _repo.GetAdvertisementsByCategory((int) id);
+            return RedirectToAction("Index", advertisement.ToList());
         }
 
         

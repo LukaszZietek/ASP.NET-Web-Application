@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using Repository.Models;
 
 namespace Repository.IRepo
@@ -20,7 +21,9 @@ namespace Repository.IRepo
 
         void UpdateAdvertisement(Advertisement ad);
 
-        List<string> GetCategoriesName();
+
+
+        IQueryable<Advertisement> GetAdvertisementsByCategory(int id);
 
         void SaveChanges();
 

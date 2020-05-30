@@ -132,7 +132,7 @@ namespace CRUDOProject.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var advertisements = _repo.GetAdvertisementsByCategories((int)id);
+            var advertisements = _repo.GetAdvertisementsByCategories((int)id).ToList();
             return RedirectToAction("Index", "Advertisements", advertisements);
         }
 

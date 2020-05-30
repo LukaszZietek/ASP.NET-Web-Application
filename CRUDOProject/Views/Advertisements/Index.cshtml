@@ -14,8 +14,9 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.InternalUser.Email)
+            @Html.DisplayNameFor(model=>model.Image)
         </th>
+
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
@@ -31,8 +32,14 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.InternalUser.Email)
+            @{
+                var base64 = Convert.ToBase64String(item.Image);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            }
+
+            <img src="@imgSrc" width="100" height="80"/>
         </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
@@ -43,9 +50,9 @@
             @Html.DisplayFor(modelItem => item.AddTime)
         </td>
         <td>
-            @Html.ActionLink("Edytuj", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Szczegóły", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Usuń", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edytuj", "Edit", new {id = item.Id}) |
+            @Html.ActionLink("Szczegóły", "Details", new {id = item.Id}) |
+            @Html.ActionLink("Usuń", "Delete", new {id = item.Id})
         </td>
     </tr>
 }
