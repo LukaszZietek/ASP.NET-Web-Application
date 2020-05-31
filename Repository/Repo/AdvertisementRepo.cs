@@ -26,6 +26,12 @@ namespace Repository.Repo
             return advertisements;
         }
 
+        public IQueryable<Advertisement> GetAdvertisements(int? page = 1, int? pageSize = 10)
+        {
+            return _db.Advertisements.OrderByDescending(x => x.AddTime).Skip((page.Value - 1) * pageSize.Value)
+                .Take(pageSize.Value).AsNoTracking();
+        }
+
         public Advertisement GetAdvertisement(int? id)
         {
             if (id != null)

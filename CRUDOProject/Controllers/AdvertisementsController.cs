@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Repository.IRepo;
 using Repository.Models;
+using PagedList;
 
 namespace CRUDOProject.Controllers
 {
@@ -22,15 +23,19 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Advertisements
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, int ? page)
         {
+            int currentPage = page ?? 1;
+            int pageSize = 10;
             if (id == null)
             {
                 var advertisements = _repo.GetAdvertisements();
-                return View(advertisements.ToList());
+                advertisements = advertisements.OrderByDescending(x => x.AddTime);
+                return View(advertisements.ToPagedList<Advertisement>(currentPage,pageSize));
             }
             var add =_repo.GetAdvertisementsByCategory((int)id);
-            return View(add.ToList());
+            add = add.OrderByDescending(x => x.AddTime);
+            return View(add.ToPagedList<Advertisement>(currentPage,pageSize));
         }
         
         [Authorize]

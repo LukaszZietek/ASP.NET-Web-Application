@@ -13,6 +13,8 @@ namespace Repository.IRepo
     {
         IQueryable<Advertisement> GetAdvertisements();
 
+        IQueryable<Advertisement> GetAdvertisements(int? page, int? pageSize);
+
         Advertisement GetAdvertisement(int? id);
 
         void DeleteAdvertisement(int? id);
