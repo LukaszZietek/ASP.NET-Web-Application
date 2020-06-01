@@ -26,6 +26,9 @@ namespace Repository.Models
         public DateTime AddTime { get; set; }
 
         [Required]
+        public double Price { get; set; }
+
+        [Required]
         [Description("Zdjęcie")]
         public byte[] Image { get; set; }
 

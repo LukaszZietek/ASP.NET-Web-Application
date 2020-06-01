@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.AspNet.Identity;
 using Repository.IRepo;
 using Repository.Models;
@@ -23,19 +24,45 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Advertisements
-        public ActionResult Index(int? id, int ? page)
+        public ActionResult Index(int? id, int ? page, int? sort)
         {
+            IQueryable<Advertisement> advertisements;
             int currentPage = page ?? 1;
             int pageSize = 10;
-            if (id == null)
+
+
+            advertisements = _repo.GetAdvertisements();
+
+            switch (sort)
             {
-                var advertisements = _repo.GetAdvertisements();
-                advertisements = advertisements.OrderByDescending(x => x.AddTime);
-                return View(advertisements.ToPagedList<Advertisement>(currentPage,pageSize));
+                case 1:
+                    advertisements = advertisements.OrderBy(x => x.Price);
+                    break;
+                case 2:
+                    advertisements = advertisements.OrderByDescending(x => x.Price);
+                    break;
+                case 3:
+                    advertisements = advertisements.OrderByDescending(x => x.AddTime);
+                    break;
+                case 4:
+                    advertisements = advertisements.OrderBy(x => x.AddTime);
+                    break;
+                case 5:
+                    advertisements = advertisements.OrderBy(x => x.Title);
+                    break;
+                case 6:
+                    advertisements = advertisements.OrderByDescending(x => x.Title);
+                    break;
+                default:
+                    advertisements = advertisements.OrderByDescending(x => x.AddTime);
+                    break;
+
             }
-            var add =_repo.GetAdvertisementsByCategory((int)id);
-            add = add.OrderByDescending(x => x.AddTime);
-            return View(add.ToPagedList<Advertisement>(currentPage,pageSize));
+            
+            return View(advertisements.ToPagedList<Advertisement>(currentPage,pageSize));
+            
+
+           
         }
         
         [Authorize]
@@ -68,7 +95,7 @@ namespace CRUDOProject.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Image,CategoriesId")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Image,CategoriesId,Price")] Advertisement advertisement)
         {
             if (!ModelState.IsValid)
             {
@@ -171,5 +198,15 @@ namespace CRUDOProject.Controllers
             base.Dispose(disposing);
         }
         */
+        [HttpPost]
+        public ActionResult IndexWithConditions(int? category, int? sort)
+        {
+            if (category == null && sort == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index", new {id = category, page = 1, sort});
+        }
     }
 }

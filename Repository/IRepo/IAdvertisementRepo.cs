@@ -11,7 +11,7 @@ namespace Repository.IRepo
 {
     public interface IAdvertisementRepo
     {
-        IQueryable<Advertisement> GetAdvertisements();
+        IQueryable<Advertisement> GetAdvertisements(int? id = null);
 
         IQueryable<Advertisement> GetAdvertisements(int? page, int? pageSize);
 
@@ -22,7 +22,6 @@ namespace Repository.IRepo
         void AddAdvertisement(Advertisement ad, HttpPostedFileBase file);
 
         void UpdateAdvertisement(Advertisement ad);
-
 
 
         IQueryable<Advertisement> GetAdvertisementsByCategory(int id);

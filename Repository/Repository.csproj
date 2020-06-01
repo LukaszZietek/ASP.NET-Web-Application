@@ -213,6 +213,10 @@
     <Compile Include="Migrations\202005291541379_UpdateAdvertisement.Designer.cs">
       <DependentUpon>202005291541379_UpdateAdvertisement.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006011543338_AddPrice.cs" />
+    <Compile Include="Migrations\202006011543338_AddPrice.Designer.cs">
+      <DependentUpon>202006011543338_AddPrice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Advertisement.cs" />
     <Compile Include="Models\Category.cs" />
@@ -244,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005291541379_UpdateAdvertisement.resx">
       <DependentUpon>202005291541379_UpdateAdvertisement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006011543338_AddPrice.resx">
+      <DependentUpon>202006011543338_AddPrice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

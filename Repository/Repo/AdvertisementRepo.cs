@@ -20,10 +20,14 @@ namespace Repository.Repo
             _db = db;
         }
 
-        public IQueryable<Advertisement> GetAdvertisements()
+        public IQueryable<Advertisement> GetAdvertisements(int? id)
         {
-            var advertisements = _db.Advertisements.AsNoTracking();
-            return advertisements;
+            if (id == null)
+            {
+                var advertisements = _db.Advertisements.AsNoTracking();
+                return advertisements;
+            }
+            return _db.Advertisements.Where(x => x.CategoriesId == id).AsNoTracking();
         }
 
         public IQueryable<Advertisement> GetAdvertisements(int? page = 1, int? pageSize = 10)
@@ -94,6 +98,8 @@ namespace Repository.Repo
             };
             return categories;
         }
+
+        
 
 
         public void SaveChanges()
