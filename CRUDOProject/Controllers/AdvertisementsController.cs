@@ -24,14 +24,17 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Advertisements
-        public ActionResult Index(int? id, int ? page, int? sort)
+        public ActionResult Index(int? id, int? sort, int ? page)
         {
             IQueryable<Advertisement> advertisements;
             int currentPage = page ?? 1;
-            int pageSize = 10;
+            int pageSize = 1;
+
+            ViewBag.PreviousId = id;
+            ViewBag.PreviousSort = sort;
 
 
-            advertisements = _repo.GetAdvertisements();
+            advertisements = _repo.GetAdvertisements(id);
 
             switch (sort)
             {

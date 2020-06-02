@@ -14,12 +14,9 @@
     @Html.ActionLink("Stwórz ogłoszenie", "Create")
 </p>
 
-@using (Html.BeginForm("IndexWithConditions", "Advertisements", FormMethod.Post, new {enctype = "multipart/form-data" }))
-{
-    @Html.ValidationSummary(true);
-<fieldset>
-    <div class="form-group">
-        <select id="UrlList" @*onchange="doNavigate(this)"*@>
+
+    <div class="form-group" >
+        <select id="UrlList">
             <option value="">Wybierz kategorie</option>
             <option value="1">Ubrania</option>
             <option value="2">Samochody</option>
@@ -29,94 +26,97 @@
     </div>
 
     <div class="form-group">
-    <select id="Sort">
-        <option value="">Sortuj po</option>
-        <option value="1">Cenie rosnąco</option>
-        <option value="2">Cenie malejąco</option>
-        <option value="3">Dacie dodania - od najnowszych</option>
-        <option value="4">Dacie dodania - od najstarszych</option>
-        <option value="5">Nazwie rosnąco</option>
-        <option value="6">Nazwie malejąco</option>
-    </select>
+        <select id="Sort">
+            <option value="">Sortuj po</option>
+            <option value="1">Cenie rosnąco</option>
+            <option value="2">Cenie malejąco</option>
+            <option value="3">Dacie dodania - od najnowszych</option>
+            <option value="4">Dacie dodania - od najstarszych</option>
+            <option value="5">Nazwie rosnąco</option>
+            <option value="6">Nazwie malejąco</option>
+        </select>
     </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="hidden" name="category" id="category" />
-                <input type="hidden" name="sort" id="sort" value="" />
-                <input type="submit" value="Wyszukaj" class="btn btn-default" onclick="" />
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="hidden" id="CategoryStatus" value="1"/>
+            <input type="hidden" id="SortStatus" value="2"/>
+            <input type="submit" value="Wyszukaj" class="btn btn-default" onclick="doNavigate(UrlList , Sort)"/>
         </div>
+    </div>
 
-</fieldset>
-
-}
 
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Image)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model[0].Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model[0].AddTime)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model[0].Price)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model) {
         <tr>
-            <td>
-                @{
-                    var base64 = Convert.ToBase64String(item.Image);
-                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                }
+            <th>
+                @Html.DisplayNameFor(model => model[0].Image)
+            </th>
 
-                <img src="@imgSrc" width="100" height="80"/>
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AddTime)
+            </th>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Edytuj", "Edit", new {id = item.Id}) |
-                @Html.ActionLink("Szczegóły", "Details", new {id = item.Id}) |
-                @Html.ActionLink("Usuń", "Delete", new {id = item.Id})
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Price)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var base64 = Convert.ToBase64String(item.Image);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    }
 
-<div>
-    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
-    @Html.PagedListPager(Model,page => Url.Action("Index", new { page}))
-</div>
+                    <img src="@imgSrc" width="100" height="80" />
+                </td>
 
-<script type="text/javascript">
-    function doNavigate(dropDownElement) {
-        var selectedValue = dropDownElement.options[dropDownElement.selectedIndex].value;
-        document.location = "/Advertisements/Index/" + selectedValue;
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
 
-    }
-</script>
+    </table>
+
+    <div>
+        Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, id = ViewBag.PreviousId, sort = ViewBag.PreviousSort }))
+    </div>
+
+    <script type="text/javascript">
+        function doNavigate(dropDownElementFirst, dropDownElementSecond) {
+            var selectedCategory = dropDownElementFirst.options[dropDownElementFirst.selectedIndex].value;
+            var selectedSort = dropDownElementSecond.options[dropDownElementSecond.selectedIndex].value;
+            document.location = "/Advertisements/Index/" + selectedCategory + "?sort=" + selectedSort;
+
+        }
+
+
+
+
+    </script>
