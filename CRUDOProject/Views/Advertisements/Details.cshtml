@@ -1,14 +1,97 @@
 ﻿@model Repository.Models.Advertisement
-
+<link href="~/Content/OwnStyle.css" rel="stylesheet" type="text/css"/>
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Szczegóły</h2>
 
-<div>
-    <h4>Advertisement</h4>
-    <hr />
+<div id="details">
+    @*<h4>Advertisement</h4>
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Price) zł
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Image)
+            </dt>
+            <dd>
+                @{
+                    var photo = Convert.ToBase64String(Model.Image);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", photo);
+                }
+
+                <img src="@imgSrc" width="300" height="300" />
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.InternalUser.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.InternalUser.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AddTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AddTime)
+            </dd>
+
+        </dl>*@
+    <div id="Title">
+        <div id="TitleBorder">
+            <h2>TYTUŁ</h2>
+        </div>
+        <h4>@Html.DisplayFor(model => model.Title)</h4>
+     
+    </div>
+
+    <div id ="Content">
+        <h2>Opis</h2>
+        
+        @Html.DisplayFor(model=>model.Content)
+    </div>
+    
+    <div id="Price">
+        <h3>Cena:  @Html.DisplayFor(model => model.Price) zł</h3>
+    </div>
+    
+    <div id="Image">
+        @{
+            var photo = Convert.ToBase64String(Model.Image);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", photo);
+            <img src="@imgSrc" class="img-thumbnail" />
+        }
+    </div>
+    
+    <h2>Dane Kontaktowe</h2>
+    
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.InternalUser.Email)
@@ -19,32 +102,21 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.AddTime)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AddTime)
-        </dd>
-
+    <dd>
+        @Html.DisplayFor(model => model.AddTime)
+    </dd>
     </dl>
+
+
+
+        <p>
+            @Html.ActionLink("Eytuj", "Edit", new { id = Model.Id }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Powrót", "Index", null, new { @class = "btn btn-success" })
+        </p>
+
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

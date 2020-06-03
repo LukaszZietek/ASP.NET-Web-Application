@@ -1,0 +1,19 @@
+﻿#details {
+    background-color: #ebebe0;
+    height: auto;
+    width: 70%;
+    padding: 10px;
+    padding-left: 30px;
+    margin: auto;
+}
+
+#Title {
+    text-align: center;
+}
+
+#TitleBorder {
+    margin: 10px;
+    border-bottom: 3px dotted grey;
+}
+
+

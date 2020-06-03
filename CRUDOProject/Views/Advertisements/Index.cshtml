@@ -48,27 +48,30 @@
 
 
 <table class="table">
+    <thead class="thead-dark">
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model[0].Image)
             </th>
 
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model[0].Title)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model[0].Content)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model[0].AddTime)
             </th>
 
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model[0].Price)
             </th>
             <th></th>
         </tr>
-
+    </thead>
+    
+    <tbody>
         @foreach (var item in Model)
         {
             <tr>
@@ -100,8 +103,9 @@
                 </td>
             </tr>
         }
+    </tbody>
 
-    </table>
+</table>
 
     <div>
         Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
