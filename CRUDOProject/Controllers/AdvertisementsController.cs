@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.AspNet.Identity;
 using Repository.IRepo;
 using Repository.Models;
@@ -201,15 +205,78 @@ namespace CRUDOProject.Controllers
             base.Dispose(disposing);
         }
         */
-        [HttpPost]
-        public ActionResult IndexWithConditions(int? category, int? sort)
+
+        public FileResult CreatePdf(int? id)
         {
-            if (category == null && sort == null)
+            if (id != null)
             {
-                return RedirectToAction("Index");
+                MemoryStream workStream = new MemoryStream();
+                StringBuilder status = new StringBuilder("");
+                DateTime dTime = DateTime.Now;
+                string strPdfFileName = string.Format("SamplePDF" + dTime.ToString("yyyyMMdd") + ".pdf");
+                Document doc = new Document(PageSize.A4,0f,0f,0f,0f);
+
+                PdfPTable table = new PdfPTable(2);
+
+                string strAttachment = Server.MapPath("~/" + strPdfFileName);
+
+                PdfWriter.GetInstance(doc, workStream).CloseStream = false;
+                doc.Open();
+                doc.Add(AddContentToPdf((int)id, table));
+
+                doc.Close();
+
+                byte[] byteInfo = workStream.ToArray();
+                workStream.Write(byteInfo,0,byteInfo.Length);
+                workStream.Position = 0;
+
+                return File(workStream, "application/pdf", strPdfFileName);
             }
 
-            return RedirectToAction("Index", new {id = category, page = 1, sort});
+            return null;
+
         }
+
+        protected PdfPTable AddContentToPdf(int id, PdfPTable table)
+        {
+            var add = _repo.GetAdvertisement(id);
+           
+                Image image;
+
+                using (MemoryStream ms = new MemoryStream(add.Image))
+                {
+                    image = Image.GetInstance(ms);
+                }
+
+                image.ScaleAbsolute(120f,155f);
+               
+
+                table.AddCell(new Phrase("Tytul: "));
+                table.AddCell(new Phrase(add.Title));
+                table.AddCell(new Phrase("Opis: "));
+                table.AddCell(new Phrase(add.Content));
+                table.AddCell(new Phrase("Cena: "));
+                table.AddCell(new Phrase(add.Price.ToString() + " PLN"));
+                table.AddCell(new Phrase("Data dodania:"));
+                table.AddCell(new Phrase(add.AddTime.ToString("yyy-MM-dd")));
+                table.AddCell(new Phrase("Kategoria: "));
+                table.AddCell(new Phrase(add.Categories.Title));
+                table.AddCell(new Phrase("Zdjęcie: "));
+                table.AddCell(new PdfPCell(image));
+                table.AddCell(new Phrase("Kontakt: "));
+                table.AddCell(new Phrase(add.InternalUser.EmailAddress));
+
+                return table;
+
+
+
+        }
+
+        //private static void AddCellToBody(PdfPTable table, string text)
+        //{
+        //    table.AddCell(new PdfPCell(new Phrase(text)));
+        //}
+
+
     }
 }
