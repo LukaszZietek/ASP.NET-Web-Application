@@ -197,6 +197,7 @@
     <Compile Include="IRepo\IAdvertisementRepo.cs" />
     <Compile Include="IRepo\ICategoryRepo.cs" />
     <Compile Include="IRepo\ICrudoContext.cs" />
+    <Compile Include="IRepo\IMessageRepo.cs" />
     <Compile Include="Migrations\202005211415510_StartUP.cs" />
     <Compile Include="Migrations\202005211415510_StartUP.Designer.cs">
       <DependentUpon>202005211415510_StartUP.cs</DependentUpon>
@@ -217,15 +218,21 @@
     <Compile Include="Migrations\202006011543338_AddPrice.Designer.cs">
       <DependentUpon>202006011543338_AddPrice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006061539191_Messages.cs" />
+    <Compile Include="Migrations\202006061539191_Messages.Designer.cs">
+      <DependentUpon>202006061539191_Messages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Advertisement.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CrudoContext.cs" />
     <Compile Include="Models\InternalUser.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\View\AdvertisementsModelView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repo\AdvertisementRepo.cs" />
     <Compile Include="Repo\CategoryRepo.cs" />
+    <Compile Include="Repo\MessageRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -251,6 +258,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006011543338_AddPrice.resx">
       <DependentUpon>202006011543338_AddPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006061539191_Messages.resx">
+      <DependentUpon>202006061539191_Messages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

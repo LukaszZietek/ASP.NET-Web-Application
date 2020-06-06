@@ -17,6 +17,8 @@ namespace Repository.IRepo
        DbSet<Category> Categories { get; set; }
        DbSet<InternalUser> WebsiteUsers { get; set; }
 
+       DbSet<Message> Messages { get; set; }
+
         int SaveChanges();
         Database Database { get; }
 

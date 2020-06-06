@@ -30,11 +30,11 @@ namespace Repository.Repo
             return _db.Advertisements.Where(x => x.CategoriesId == id).AsNoTracking();
         }
 
-        public IQueryable<Advertisement> GetAdvertisements(int? page = 1, int? pageSize = 10)
-        {
-            return _db.Advertisements.OrderByDescending(x => x.AddTime).Skip((page.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value).AsNoTracking();
-        }
+        //public IQueryable<Advertisement> GetAdvertisements(int? page = 1, int? pageSize = 10)
+        //{
+        //    return _db.Advertisements.OrderByDescending(x => x.AddTime).Skip((page.Value - 1) * pageSize.Value)
+        //        .Take(pageSize.Value).AsNoTracking();
+        //}
 
         public Advertisement GetAdvertisement(int? id)
         {
@@ -47,8 +47,8 @@ namespace Repository.Repo
                 }
                 
             }
-            
-                throw new HttpException("We can't find advertisement which has that ID");
+
+            return null;
         }
 
         public void DeleteAdvertisement(int? id)

@@ -210,25 +210,12 @@ namespace CRUDOProject.Controllers
         {
             if (id != null)
             {
-                MemoryStream workStream = new MemoryStream();
-                StringBuilder status = new StringBuilder("");
+                PdfMaker pdfMaker = new PdfMaker(_repo.GetAdvertisement(id));
+                MemoryStream workStream = pdfMaker.GeneratePdf(new MemoryStream());
                 DateTime dTime = DateTime.Now;
-                string strPdfFileName = string.Format("SamplePDF" + dTime.ToString("yyyyMMdd") + ".pdf");
-                Document doc = new Document(PageSize.A4,0f,0f,0f,0f);
+                string strPdfFileName = string.Format("Ogłoszenie" + dTime.ToString("yyyyMMdd") + ".pdf");
 
-                PdfPTable table = new PdfPTable(2);
 
-                string strAttachment = Server.MapPath("~/" + strPdfFileName);
-
-                PdfWriter.GetInstance(doc, workStream).CloseStream = false;
-                doc.Open();
-                doc.Add(AddContentToPdf((int)id, table));
-
-                doc.Close();
-
-                byte[] byteInfo = workStream.ToArray();
-                workStream.Write(byteInfo,0,byteInfo.Length);
-                workStream.Position = 0;
 
                 return File(workStream, "application/pdf", strPdfFileName);
             }
@@ -237,45 +224,8 @@ namespace CRUDOProject.Controllers
 
         }
 
-        protected PdfPTable AddContentToPdf(int id, PdfPTable table)
-        {
-            var add = _repo.GetAdvertisement(id);
-           
-                Image image;
+       
 
-                using (MemoryStream ms = new MemoryStream(add.Image))
-                {
-                    image = Image.GetInstance(ms);
-                }
-
-                image.ScaleAbsolute(120f,155f);
-               
-
-                table.AddCell(new Phrase("Tytul: "));
-                table.AddCell(new Phrase(add.Title));
-                table.AddCell(new Phrase("Opis: "));
-                table.AddCell(new Phrase(add.Content));
-                table.AddCell(new Phrase("Cena: "));
-                table.AddCell(new Phrase(add.Price.ToString() + " PLN"));
-                table.AddCell(new Phrase("Data dodania:"));
-                table.AddCell(new Phrase(add.AddTime.ToString("yyy-MM-dd")));
-                table.AddCell(new Phrase("Kategoria: "));
-                table.AddCell(new Phrase(add.Categories.Title));
-                table.AddCell(new Phrase("Zdjęcie: "));
-                table.AddCell(new PdfPCell(image));
-                table.AddCell(new Phrase("Kontakt: "));
-                table.AddCell(new Phrase(add.InternalUser.EmailAddress));
-
-                return table;
-
-
-
-        }
-
-        //private static void AddCellToBody(PdfPTable table, string text)
-        //{
-        //    table.AddCell(new PdfPCell(new Phrase(text)));
-        //}
 
 
     }
