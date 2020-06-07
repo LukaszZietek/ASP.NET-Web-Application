@@ -25,7 +25,7 @@ namespace Repository.Models
         public DateTime SendTime { get; set; }
 
         [Display(Name = "Czas otwarcia wiadomości")]
-        public DateTime OpenTime { get; set; }
+        public DateTime ? OpenTime { get; set; }
 
         
         public string SenderId { get; set; }

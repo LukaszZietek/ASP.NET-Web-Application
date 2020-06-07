@@ -13,6 +13,10 @@ namespace Repository.IRepo
 
         Message GetMessage(int? id);
 
+        bool IfExist(string mail);
+
+        string GetRecipientIdByEmail(string email);
+
         void SetDateTime(int? id, DateTime dt);
 
         void DeleteMessage(int? id);

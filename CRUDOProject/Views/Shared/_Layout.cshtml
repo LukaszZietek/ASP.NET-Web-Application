@@ -41,6 +41,10 @@
                             }
                         </ul>
                     </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Wiadomości", "Index", "Messages")</li>
+                    }
 
                 </ul>
                 @Html.Partial("_LoginPartial")

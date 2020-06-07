@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Repository.IRepo;
 using Repository.Models;
 using EntityState = System.Data.Entity.EntityState;
@@ -31,6 +32,23 @@ namespace Repository.Repo
             }
 
             return null;
+        }
+
+        public bool IfExist(string mail)
+        {
+            var user = _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(mail)).FirstOrDefault();
+            if (user != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public string GetRecipientIdByEmail(string email)
+        {
+            
+            return _db.WebsiteUsers.Where(x => x.EmailAddress == email).FirstOrDefault().Id;
         }
 
         public void SetDateTime(int? id, DateTime dt)
