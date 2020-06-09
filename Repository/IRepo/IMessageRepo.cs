@@ -11,6 +11,8 @@ namespace Repository.IRepo
     {
         IQueryable<Message> GetMessagesForCurrentUser(string userId);
 
+        IQueryable<Message> GetSentMessagesByCurrentUser(string userId);
+
         Message GetMessage(int? id);
 
         bool IfExist(string mail);

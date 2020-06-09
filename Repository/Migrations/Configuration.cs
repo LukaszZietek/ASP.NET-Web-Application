@@ -77,24 +77,10 @@ namespace Repository.Migrations
                 var manager = new UserManager<InternalUser>(store);
                 var user = new InternalUser {UserName = "administrator@mvc.pl", Name = "Maciek", SurName = "Zietek",
                     EmailAddress = "administrator@mvc.pl", RegisterDate = DateTime.Now, IfConfirm = true, Email = "administrator@mvc.pl"};
-                try
-                {
-                    var adminresult = manager.Create(user, "Maciek12_!");
+                var adminresult = manager.Create(user, "Maciek12_!");
                     if (adminresult.Succeeded)
                         manager.AddToRole(user.Id, "Admin");
-                }
-                catch (DbEntityValidationException e)
-                {
-                    foreach (var validationErrors in e.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            Trace.TraceInformation("Property: {0} Error: {1}",
-                                validationError.PropertyName,
-                                validationError.ErrorMessage);
-                        }
-                    }
-                }
+               
                 
             }
 

@@ -281,6 +281,7 @@
     <Content Include="Views\Messages\Delete.cshtml" />
     <Content Include="Views\Messages\Details.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
+    <Content Include="Views\Messages\SentMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

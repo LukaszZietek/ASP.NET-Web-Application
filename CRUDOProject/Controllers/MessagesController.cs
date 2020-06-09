@@ -125,6 +125,11 @@ namespace CRUDOProject.Controllers
         // GET: Messages/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!(User.Identity.GetUserId().Equals(_repo.GetMessage(id).RecipientId)))
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -146,6 +151,12 @@ namespace CRUDOProject.Controllers
             _repo.DeleteMessage(id);
             _repo.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SentMessage()
+        {
+           return View("Index", _repo.GetSentMessagesByCurrentUser(User.Identity.GetUserId()));
+
         }
 
         //protected override void Dispose(bool disposing)

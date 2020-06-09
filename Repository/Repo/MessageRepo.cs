@@ -21,7 +21,12 @@ namespace Repository.Repo
 
         public IQueryable<Message> GetMessagesForCurrentUser(string userId)
         {
-            return _db.Messages.Where(x => x.RecipientId == userId).AsNoTracking();
+            return _db.Messages.Where(x => x.RecipientId.Equals(userId)).AsNoTracking();
+        }
+
+        public IQueryable<Message> GetSentMessagesByCurrentUser(string userId)
+        {
+            return _db.Messages.Where(x => x.SenderId.Equals(userId)).AsNoTracking();
         }
 
         public Message GetMessage(int? id)
@@ -48,7 +53,7 @@ namespace Repository.Repo
         public string GetRecipientIdByEmail(string email)
         {
             
-            return _db.WebsiteUsers.Where(x => x.EmailAddress == email).FirstOrDefault().Id;
+            return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(email)).FirstOrDefault().Id;
         }
 
         public void SetDateTime(int? id, DateTime dt)
