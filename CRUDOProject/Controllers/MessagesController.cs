@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
+using PagedList;
 using Repository.IRepo;
 using Repository.Models;
 using Repository.Models.View;
@@ -25,10 +26,14 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Messages
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var userId = User.Identity.GetUserId();
-            return View(_repo.GetMessagesForCurrentUser(userId));
+            int currentPage = page ?? 1;
+            int pageSize = 1;
+
+            var messages = _repo.GetMessagesForCurrentUser(User.Identity.GetUserId());
+            messages = messages.OrderByDescending(x => x.SendTime);
+            return View(messages.ToPagedList(currentPage,pageSize));
         }
 
         // GET: Messages/Details/5

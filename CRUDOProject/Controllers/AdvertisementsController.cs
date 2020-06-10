@@ -15,6 +15,8 @@ using Microsoft.AspNet.Identity;
 using Repository.IRepo;
 using Repository.Models;
 using PagedList;
+using Repository.Models.View;
+using Repository.Repo;
 
 namespace CRUDOProject.Controllers
 {
@@ -22,7 +24,7 @@ namespace CRUDOProject.Controllers
     {
         private readonly IAdvertisementRepo _repo;
 
-        public AdvertisementsController(IAdvertisementRepo repo)
+        public AdvertisementsController(IAdvertisementRepo repo, IMessageRepo msgRepo)
         {
             _repo = repo;
         }
@@ -221,6 +223,15 @@ namespace CRUDOProject.Controllers
             }
 
             return null;
+
+        }
+
+
+        public ActionResult SendMessageToOwner(int? id)
+        {
+            MessageModelView msg = new MessageModelView();
+            msg.RecipientEmail = _repo.GetAdvertisement(id).InternalUser.EmailAddress;
+            return View("../Messages/Create", msg);
 
         }
 

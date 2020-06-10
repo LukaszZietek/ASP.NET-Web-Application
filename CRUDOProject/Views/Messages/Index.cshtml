@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Repository.Models.Message>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Repository.Models.Message>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -12,51 +14,56 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model[0].Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Content)
+            @Html.DisplayNameFor(model => model[0].Content)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SendTime)
+            @Html.DisplayNameFor(model => model[0].SendTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OpenTime)
+            @Html.DisplayNameFor(model => model[0].OpenTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SenderId)
+            @Html.DisplayNameFor(model => model[0].SenderId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RecipientId)
+            @Html.DisplayNameFor(model => model[0].RecipientId)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SendTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OpenTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SenderId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RecipientId)
-        </td>
-        <td>
-            @Html.ActionLink("Szczegóły", "Details", new { id=item.Id })
-            @Html.ActionLink("Usuń", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SenderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipientId)
+            </td>
+            <td>
+                @Html.ActionLink("Szczegóły", "Details", new { id=item.Id })
+                @Html.ActionLink("Usuń", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+
+<div>
+    Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+    @Html.PagedListPager(Model,page => Url.Action("Index",new {page}))
+</div>

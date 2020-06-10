@@ -116,6 +116,7 @@
             @Html.ActionLink("Eytuj", "Edit", new { id = Model.Id }, new { @class = "btn btn-info" })
             @Html.ActionLink("Powrót", "Index", null, new { @class = "btn btn-success" })
             @Html.ActionLink("Stwórz PDF","CreatePdf",new { id = Model.Id}, new {@class = "btn btn-link"})
+            @Html.ActionLink("Wyślij wiadomość","SendMessageToOwner", new {id = Model.Id}, new {@class = "btn btn-link"})
             
         </p>
 

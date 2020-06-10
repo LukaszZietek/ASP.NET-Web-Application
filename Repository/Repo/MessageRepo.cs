@@ -50,10 +50,10 @@ namespace Repository.Repo
             return false;
         }
 
-        public string GetRecipientIdByEmail(string email)
+        public string GetRecipientIdByEmail(string arg)
         {
-            
-            return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(email)).FirstOrDefault().Id;
+            return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(arg)).FirstOrDefault().Id;
+          
         }
 
         public void SetDateTime(int? id, DateTime dt)
