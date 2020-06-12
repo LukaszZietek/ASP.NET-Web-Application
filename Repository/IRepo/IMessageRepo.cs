@@ -17,7 +17,7 @@ namespace Repository.IRepo
 
         bool IfExist(string mail);
 
-        string GetRecipientIdByEmail(string arg);
+        string GetRecipientIdByEmailOrEmailById(string arg);
 
         void SetDateTime(int? id, DateTime dt);
 

@@ -1,4 +1,5 @@
-﻿@model Repository.Models.Message
+﻿@using Microsoft.AspNet.Identity
+@model Repository.Models.Message
 
 @{
     ViewBag.Title = "Szczegóły wiadomości";
@@ -49,5 +50,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Powrót", "Index")
+    @if (User.Identity.GetUserId().Equals(Model.RecipientId))
+    {
+        @Html.ActionLink("Odpowiedz", "Create", new {id = Model.SenderId},new {@class = "btn btn-secondary"})
+    }
+    @Html.ActionLink("Powrót", "Index", null,new { @class = "btn btn-success"})
 </p>

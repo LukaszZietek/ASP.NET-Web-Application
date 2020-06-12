@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
@@ -50,9 +51,13 @@ namespace Repository.Repo
             return false;
         }
 
-        public string GetRecipientIdByEmail(string arg)
+        public string GetRecipientIdByEmailOrEmailById(string arg)
         {
-            return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(arg)).FirstOrDefault().Id;
+            if (arg.Contains("@"))
+            {
+                return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(arg)).FirstOrDefault().Id;
+            }
+            return _db.WebsiteUsers.Where(x => x.Id.Equals(arg)).FirstOrDefault().EmailAddress;
           
         }
 
@@ -61,10 +66,13 @@ namespace Repository.Repo
             var msg = _db.Messages.Find(id);
             if (msg != null)
             {
-                msg.OpenTime = dt;
+                if (msg.OpenTime == null)
+                {
+                    msg.OpenTime = dt;
+                    _db.Entry(msg).State = EntityState.Modified;
+                }
             }
 
-            _db.Entry(msg).State = EntityState.Modified;
         }
 
         public void DeleteMessage(int? id)

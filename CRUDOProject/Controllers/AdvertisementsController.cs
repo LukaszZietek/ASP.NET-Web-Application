@@ -231,7 +231,7 @@ namespace CRUDOProject.Controllers
         {
             MessageModelView msg = new MessageModelView();
             msg.RecipientEmail = _repo.GetAdvertisement(id).InternalUser.EmailAddress;
-            return View("../Messages/Create", msg);
+            return RedirectToAction("Create", "Messages", new {@id = id});
 
         }
 

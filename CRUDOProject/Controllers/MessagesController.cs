@@ -43,8 +43,7 @@ namespace CRUDOProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            _repo.SetDateTime(id,DateTime.Now);
-            _repo.SaveChanges();
+            
 
             Message message = _repo.GetMessage(id);
 
@@ -52,7 +51,14 @@ namespace CRUDOProject.Controllers
             {
                 return HttpNotFound();
             }
-            if (!(message.RecipientId.Equals(User.Identity.GetUserId())))
+
+            if (message.RecipientId.Equals(User.Identity.GetUserId()))
+            {
+                _repo.SetDateTime(id, DateTime.Now);
+                _repo.SaveChanges();
+            }
+
+            if (!(message.RecipientId.Equals(User.Identity.GetUserId()) || message.SenderId.Equals(User.Identity.GetUserId())))
             {
                 return HttpNotFound("Brak dostępu");
             }
@@ -61,9 +67,14 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Messages/Create
-        public ActionResult Create()
+        public ActionResult Create(string userId)
         {
             MessageModelView msg = new MessageModelView();
+            if (userId != null)
+            {
+                msg.RecipientEmail = _repo.GetRecipientIdByEmailOrEmailById(userId);
+            }
+
             return View(msg);
         }
 
@@ -82,7 +93,7 @@ namespace CRUDOProject.Controllers
                     {
                         Content = message.Content,
                         SendTime = DateTime.Now,
-                        RecipientId = _repo.GetRecipientIdByEmail(message.RecipientEmail),
+                        RecipientId = _repo.GetRecipientIdByEmailOrEmailById(message.RecipientEmail),
                         Title = message.Title,
                         OpenTime = null,
                         SenderId = User.Identity.GetUserId()
@@ -158,9 +169,20 @@ namespace CRUDOProject.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SentMessage()
+        public ActionResult SentMessage(int ? page)
         {
-           return View("Index", _repo.GetSentMessagesByCurrentUser(User.Identity.GetUserId()));
+
+            int currentPage = page ?? 1;
+            int pageSize = 1;
+
+            var messages = _repo.GetSentMessagesByCurrentUser(User.Identity.GetUserId())
+                .OrderByDescending(x => x.SendTime);
+            foreach (var img in messages)
+            {
+                Message msg = img;
+                Console.WriteLine(msg);
+            }
+           return View(messages.ToPagedList(currentPage,pageSize));
 
         }
 
