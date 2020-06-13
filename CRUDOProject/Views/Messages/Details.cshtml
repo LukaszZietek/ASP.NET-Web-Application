@@ -52,7 +52,7 @@
 <p>
     @if (User.Identity.GetUserId().Equals(Model.RecipientId))
     {
-        @Html.ActionLink("Odpowiedz", "Create", new {id = Model.SenderId},new {@class = "btn btn-secondary"})
+        @Html.ActionLink("Odpowiedz", "Create", new { @userId = Model.SenderId},new {@class = "btn btn-secondary"})
     }
     @Html.ActionLink("Powrót", "Index", null,new { @class = "btn btn-success"})
 </p>

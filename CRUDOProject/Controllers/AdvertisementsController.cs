@@ -24,7 +24,7 @@ namespace CRUDOProject.Controllers
     {
         private readonly IAdvertisementRepo _repo;
 
-        public AdvertisementsController(IAdvertisementRepo repo, IMessageRepo msgRepo)
+        public AdvertisementsController(IAdvertisementRepo repo)
         {
             _repo = repo;
         }
@@ -34,7 +34,7 @@ namespace CRUDOProject.Controllers
         {
             IQueryable<Advertisement> advertisements;
             int currentPage = page ?? 1;
-            int pageSize = 1;
+            int pageSize = 2;
 
             ViewBag.PreviousId = id;
             ViewBag.PreviousSort = sort;
@@ -229,9 +229,13 @@ namespace CRUDOProject.Controllers
 
         public ActionResult SendMessageToOwner(int? id)
         {
-            MessageModelView msg = new MessageModelView();
-            msg.RecipientEmail = _repo.GetAdvertisement(id).InternalUser.EmailAddress;
-            return RedirectToAction("Create", "Messages", new {@id = id});
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            string recipientId = _repo.GetAdvertisement(id).InternalUserId;
+            return RedirectToAction("Create", "Messages", new {@userId = recipientId});
 
         }
 

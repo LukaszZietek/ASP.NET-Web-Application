@@ -55,9 +55,9 @@ namespace Repository.Repo
         {
             if (arg.Contains("@"))
             {
-                return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(arg)).FirstOrDefault().Id;
+                return _db.WebsiteUsers.Where(x => x.EmailAddress.Equals(arg)).FirstOrDefault()?.Id;
             }
-            return _db.WebsiteUsers.Where(x => x.Id.Equals(arg)).FirstOrDefault().EmailAddress;
+            return _db.WebsiteUsers.Where(x => x.Id.Equals(arg)).FirstOrDefault()?.EmailAddress;
           
         }
 
