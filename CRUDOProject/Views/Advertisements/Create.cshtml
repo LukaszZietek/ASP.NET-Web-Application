@@ -1,6 +1,6 @@
 ﻿@using Repository.Models
 @using Repository.Repo
-@model Repository.Models.Advertisement
+@model Repository.Models.View.AdvertisementsModelView
 
 @{
     ViewBag.Title = "Tworzenie ogłoszenia";
@@ -8,7 +8,7 @@
     ViewBag.Description = "Tworzenie nowego ogłoszenia";
 }
 
-<h2>Create</h2>
+<h2 class="text-center">Tworzenie ogłoszenia</h2>
 
 
 @using (Html.BeginForm("Create","Advertisements",FormMethod.Post,new {enctype = "multipart/form-data"})) 
@@ -16,7 +16,7 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Advertisement</h4>
+    <h4>Ogłoszenie</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -30,7 +30,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.TextAreaFor(model=>model.Content,new { @class = "form-control"})
             @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -55,7 +56,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+            @*<input type="file" name="ImageData" class="custom-file-input" id="ImageData" onchange="fileCheck(this);"/>*@
+            @Html.TextBoxFor(model=>model.Image,new {type = "file"})
         </div>
     </div>
 

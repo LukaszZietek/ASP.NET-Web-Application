@@ -9,7 +9,7 @@
     ViewBag.Description = "Lista ogłoszeń znajdujących się na serwisie";
 }
 
-<h2>Lista ogłoszeń</h2>
+<h2 class="text-center">Lista ogłoszeń</h2>
 
 <br/>
 <p>
@@ -17,7 +17,7 @@
 </p>
 <br/>
 <br/>
-<form class="form-inline">
+<span class="form-inline">
     <select id="UrlList" class="d-inline-block form-control">
         <option value="">Wybierz kategorie</option>
         <option value="1">Ubrania</option>
@@ -42,7 +42,7 @@
             <input type="submit" value="Wyszukaj" class="btn btn-default" onclick="doNavigate(UrlList , Sort)"/>
         </div>
     </div>
-</form>
+</span>
     
 
 

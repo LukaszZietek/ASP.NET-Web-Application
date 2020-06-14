@@ -95,7 +95,8 @@ namespace CRUDOProject.Controllers
         // GET: Advertisements/Create
         public ActionResult Create()
         {
-            return View();
+            AdvertisementsModelView advertisement = new AdvertisementsModelView();
+            return View(advertisement);
         }
 
         // POST: Advertisements/Create
@@ -104,14 +105,26 @@ namespace CRUDOProject.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Content,InternalUserId,Image,CategoriesId,Price")] Advertisement advertisement)
+        public ActionResult Create(AdvertisementsModelView advertisement)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                HttpPostedFileBase file = Request.Files["ImageData"];
-                advertisement.AddTime = DateTime.Now;
-                advertisement.InternalUserId = User.Identity.GetUserId();
-                _repo.AddAdvertisement(advertisement,file);
+                Advertisement ad = new Advertisement()
+                {
+                    AddTime = DateTime.Now,
+                    CategoriesId = advertisement.CategoriesId,
+                    Content = advertisement.Content,
+                    InternalUserId = User.Identity.GetUserId(),
+                    Price = advertisement.Price,
+                    Title = advertisement.Title
+                };
+
+                using (var binaryReader = new BinaryReader(advertisement.Image.InputStream))
+                {
+                    ad.Image = binaryReader.ReadBytes(advertisement.Image.ContentLength);
+                }
+
+                _repo.AddAdvertisement(ad);
                 _repo.SaveChanges();
                 return RedirectToAction("Index");
             }

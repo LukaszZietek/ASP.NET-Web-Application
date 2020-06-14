@@ -63,18 +63,20 @@ namespace Repository.Repo
                     _db.Advertisements.Remove(advertisement);
                 }
 
+                return;
+
             }
             throw new HttpException("We can't find advertisement which has that ID");
         }
 
-        public void AddAdvertisement(Advertisement ad, HttpPostedFileBase file)
+        public void AddAdvertisement(Advertisement ad)
         {
-            using (var binaryReader = new BinaryReader(file.InputStream))
+            if (ad != null)
             {
-                ad.Image = binaryReader.ReadBytes(file.ContentLength);
+                _db.Advertisements.Add(ad);
+                return;
             }
-
-            _db.Advertisements.Add(ad);
+            throw new HttpException("We can't add empty Advertisement model");
         }
 
         public void UpdateAdvertisement(Advertisement ad)

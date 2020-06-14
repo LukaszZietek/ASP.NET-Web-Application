@@ -21,7 +21,7 @@ namespace Repository.IRepo
 
         void DeleteAdvertisement(int? id);
 
-        void AddAdvertisement(Advertisement ad, HttpPostedFileBase file);
+        void AddAdvertisement(Advertisement ad);
 
         void UpdateAdvertisement(Advertisement ad);
 

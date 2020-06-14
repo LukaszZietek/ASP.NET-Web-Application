@@ -23,7 +23,7 @@ namespace Repository.Models
         [Display(Name="Opis")]
         public string Content { get; set; }
 
-        [Required]
+
         [DataType(DataType.DateTime)]
         [Display(Name="Data Dodania")]
         public DateTime AddTime { get; set; }
