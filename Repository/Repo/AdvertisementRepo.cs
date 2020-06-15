@@ -30,7 +30,16 @@ namespace Repository.Repo
             return _db.Advertisements.Where(x => x.CategoriesId == id).AsNoTracking();
         }
 
-       
+        public IQueryable<Advertisement> GetUserAdvertisements(string userId)
+        {
+            return _db.Advertisements.Where(x => x.InternalUserId.Equals(userId)).AsNoTracking();
+        }
+
+        public IQueryable<Advertisement> GetAdvertisementsWhichContain(string searchValue)
+        {
+            return _db.Advertisements.Where(x => x.Title.ToLower().Contains(searchValue.ToLower())).AsNoTracking();
+        }
+
 
         //public IQueryable<Advertisement> GetAdvertisements(int? page = 1, int? pageSize = 10)
         //{

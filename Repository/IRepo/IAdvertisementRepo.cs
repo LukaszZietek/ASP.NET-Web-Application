@@ -15,7 +15,11 @@ namespace Repository.IRepo
 
         //IQueryable<Advertisement> GetAdvertisements(int? page, int? pageSize);
 
-        
+        IQueryable<Advertisement> GetUserAdvertisements(string userId);
+
+        IQueryable<Advertisement> GetAdvertisementsWhichContain(string searchValue);
+
+
 
         Advertisement GetAdvertisement(int? id);
 

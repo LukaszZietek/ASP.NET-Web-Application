@@ -18,7 +18,7 @@
 <br/>
 <br/>
 <span class="form-inline">
-    <select id="UrlList" class="d-inline-block form-control">
+    <select id="UrlList" class="d-inline-block form-control" onload="changeState(ViewBag.PreviousId)">
         <option value="">Wybierz kategorie</option>
         <option value="1">Ubrania</option>
         <option value="2">Samochody</option>
@@ -37,9 +37,12 @@
         <option value="5">Nazwie rosnąco</option>
         <option value="6">Nazwie malejąco</option>
     </select>
+    
+    <input class="form-control" type="text" id="Search" placeholder="Szukaj" aria-label="Search"/>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Wyszukaj" class="btn btn-default" onclick="doNavigate(UrlList , Sort)"/>
+            <input type="submit" value="Wyszukaj" class="btn btn-default" onclick="doNavigate(UrlList , Sort, Search)"/>
         </div>
     </div>
 </span>
@@ -118,18 +121,23 @@
 
     <div>
         Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, id = ViewBag.PreviousId, sort = ViewBag.PreviousSort }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, id = ViewBag.PreviousId, sort = ViewBag.PreviousSort, search= ViewBag.PreviousSearch }))
     </div>
 
-    <script type="text/javascript">
-        function doNavigate(dropDownElementFirst, dropDownElementSecond) {
-            var selectedCategory = dropDownElementFirst.options[dropDownElementFirst.selectedIndex].value;
-            var selectedSort = dropDownElementSecond.options[dropDownElementSecond.selectedIndex].value;
-            document.location = "/Advertisements/Index/" + selectedCategory + "?sort=" + selectedSort;
+<script type="text/javascript">
 
+
+    function doNavigate(dropDownElementFirst, dropDownElementSecond, search) {
+        var selectedCategory = dropDownElementFirst.options[dropDownElementFirst.selectedIndex].value;
+        var selectedSort = dropDownElementSecond.options[dropDownElementSecond.selectedIndex].value;
+        var typedSearch = search.value;
+        if (typedSearch === "") {
+            document.location = "/Advertisements/Index/" + selectedCategory + "?sort=" + selectedSort;
+        } else {
+            document.location = "/Advertisements/Index/" + selectedCategory + "?sort=" + selectedSort + "&search=" + typedSearch;
         }
 
+    }
 
 
-
-    </script>
+</script>

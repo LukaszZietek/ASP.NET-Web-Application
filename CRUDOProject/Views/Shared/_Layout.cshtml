@@ -38,6 +38,7 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li>@Html.ActionLink("Dodaj ogłoszenie","Create","Advertisements")</li>
+                                <li>@Html.ActionLink("Moje ogłoszenia","UserAdvertisements","Advertisements")</li>
                             }
                         </ul>
                     </li>

@@ -30,17 +30,25 @@ namespace CRUDOProject.Controllers
         }
 
         // GET: Advertisements
-        public ActionResult Index(int? id, int? sort, int ? page)
+        public ActionResult Index(int? id, int? sort, int ? page, string search)
         {
+
             IQueryable<Advertisement> advertisements;
             int currentPage = page ?? 1;
             int pageSize = 2;
 
             ViewBag.PreviousId = id;
             ViewBag.PreviousSort = sort;
+            ViewBag.PreviousSearch = search;
 
-
-            advertisements = _repo.GetAdvertisements(id);
+            if (search == null)
+            {
+                advertisements = _repo.GetAdvertisements(id);
+            }
+            else
+            {
+                advertisements = _repo.GetAdvertisementsWhichContain(search);
+            }
 
             switch (sort)
             {
@@ -250,6 +258,17 @@ namespace CRUDOProject.Controllers
             string recipientId = _repo.GetAdvertisement(id).InternalUserId;
             return RedirectToAction("Create", "Messages", new {@userId = recipientId});
 
+        }
+
+        public ActionResult UserAdvertisements(int? page)
+        {
+            int pageNumber = page ?? 1;
+            int pageSize = 5;
+
+            var advertisement = _repo.GetUserAdvertisements(User.Identity.GetUserId())
+                ?.OrderByDescending(x => x.AddTime);
+
+            return View(advertisement.ToPagedList<Advertisement>(pageNumber, pageSize));
         }
 
        
